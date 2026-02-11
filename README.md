@@ -10,22 +10,26 @@ A simple time tracking extension for Raycast that lets you quickly start and swi
 - **Real-time Status**: View currently active tracking and today's summary
 - **Reports**: View time summaries by day, week, month, or all time
 
-## Setup
+## Installation
 
-1. Install dependencies:
+1. Clone or download this repository to your computer
+
+2. Open Terminal and navigate to the extension folder:
+   ```bash
+   cd path/to/timetrack-raycast
+   ```
+
+3. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Create an icon file (optional):
-   The extension needs an `icon.png` file in the assets directory. You can:
-   - Create a 512x512px PNG icon, or
-   - Download a clock/timer icon and save it as `icon.png`
-
-3. Start development:
+4. Load the extension in Raycast:
    ```bash
    npm run dev
    ```
+
+5. The extension will now appear in Raycast and is ready to use!
 
 ## Usage
 
