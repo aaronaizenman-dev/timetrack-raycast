@@ -3,7 +3,7 @@
   "name": "timetrack",
   "title": "Time Tracker",
   "description": "Simple time tracking for clients and projects",
-  "icon": "assets/icon.png",
+  "icon": "icon.png",
   "author": "aaronaizenman",
   "license": "MIT",
   "commands": [
