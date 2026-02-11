@@ -18,7 +18,7 @@ A simple time tracking extension for Raycast that lets you quickly start and swi
    ```
 
 2. Create an icon file (optional):
-   The extension needs an `icon.png` file in the root directory. You can:
+   The extension needs an `icon.png` file in the assets directory. You can:
    - Create a 512x512px PNG icon, or
    - Download a clock/timer icon and save it as `icon.png`
 
