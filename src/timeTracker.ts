@@ -122,7 +122,7 @@ export class TimeTracker {
 
     return lines
       .filter((line) => line.trim().length > 0)
-      .map((line) => {
+      .map((line): TimeEntry | null => {
         const matches = line.match(/"([^"]*)","([^"]*)","([^"]*)",(\d+)/);
         if (!matches) return null;
 
@@ -318,5 +318,61 @@ export class TimeTracker {
 
     // Clear idle state
     this.clearIdleState();
+  }
+
+  // Manual entry management
+  addEntry(client: string, startTime: Date, endTime: Date): TimeEntry {
+    const actualMinutes = Math.round((endTime.getTime() - startTime.getTime()) / 60000);
+    const durationMinutes = this.roundDuration(actualMinutes);
+
+    const entry: TimeEntry = {
+      client,
+      startTime,
+      endTime,
+      durationMinutes,
+    };
+
+    this.appendEntry(entry);
+    return entry;
+  }
+
+  updateEntry(originalEntry: TimeEntry, updatedEntry: TimeEntry): void {
+    const entries = this.getAllEntries();
+    const updatedEntries = entries.map((entry) => {
+      // Match by client, startTime, and endTime
+      if (
+        entry.client === originalEntry.client &&
+        entry.startTime.getTime() === originalEntry.startTime.getTime() &&
+        entry.endTime?.getTime() === originalEntry.endTime?.getTime()
+      ) {
+        return updatedEntry;
+      }
+      return entry;
+    });
+
+    this.saveAllEntries(updatedEntries);
+  }
+
+  deleteEntry(entryToDelete: TimeEntry): void {
+    const entries = this.getAllEntries();
+    const filteredEntries = entries.filter((entry) => {
+      // Match by client, startTime, and endTime
+      return !(
+        entry.client === entryToDelete.client &&
+        entry.startTime.getTime() === entryToDelete.startTime.getTime() &&
+        entry.endTime?.getTime() === entryToDelete.endTime?.getTime()
+      );
+    });
+
+    this.saveAllEntries(filteredEntries);
+  }
+
+  private saveAllEntries(entries: TimeEntry[]): void {
+    // Rewrite entire CSV file
+    let content = "client,startTime,endTime,durationMinutes\n";
+    for (const entry of entries) {
+      content += `"${entry.client}","${entry.startTime.toISOString()}","${entry.endTime?.toISOString()}",${entry.durationMinutes}\n`;
+    }
+    fs.writeFileSync(ENTRIES_FILE, content);
   }
 }
