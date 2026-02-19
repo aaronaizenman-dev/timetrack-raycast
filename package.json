@@ -6,6 +6,9 @@
   "icon": "icon.png",
   "author": "aaronaizenman",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "commands": [
     {
       "name": "track",

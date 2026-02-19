@@ -12,29 +12,268 @@ A simple time tracking extension for Raycast that lets you quickly start and swi
 
 ## Installation
 
-1. Clone or download this repository to your computer
+### Step 1: Install Raycast
 
-2. Open Terminal and navigate to the extension folder:
+If you don't have Raycast installed:
+1. Go to [raycast.com](https://www.raycast.com/)
+2. Download and install Raycast
+3. Open Raycast from Applications or set up a hotkey:
+   - Open System Settings → Keyboard → Keyboard Shortcuts → Spotlight
+   - Uncheck "Show Spotlight search"
+   - Open Raycast → Settings → General
+   - Set your Raycast hotkey (commonly Cmd+Space)
+
+### Step 2: Open Terminal
+
+1. Open Spotlight (Cmd+Space if you didn't disable it, or search in Finder)
+2. Type "Terminal" and press Enter
+
+### Step 3: Install Homebrew (if needed)
+
+Check if you have Homebrew installed:
+```bash
+brew --version
+```
+
+If you see a version number, skip to Step 4. If not, install Homebrew:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Follow the on-screen instructions. You may need to enter your computer password.
+
+**Important:** After installation, Homebrew will show instructions to add it to your PATH. Copy and run those commands in Terminal (they'll look like `echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile`).
+
+After running those commands, close and reopen Terminal.
+
+### Step 4: Set Up Node.js
+
+#### 4a. Check Your Current Node.js Version
+
+```bash
+node --version
+```
+
+**If you see `v20.x.x` or higher (like `v22.x.x`):** You're all set! Skip to Step 5.
+
+**If you see `v18.x.x` or lower:** Continue to 4b to upgrade.
+
+**If you see "command not found":** Continue to 4c to install Node.js.
+
+#### 4b. Upgrade Node.js (if you have an old version)
+
+First, check which tool is managing your Node.js installation:
+
+```bash
+which node
+```
+
+**If the output contains `.nodenv`:**
+```bash
+# Install Node 20 with nodenv
+nodenv install 20.18.1
+
+# Set it as your global default
+nodenv global 20.18.1
+
+# Refresh nodenv
+nodenv rehash
+
+# Verify
+node --version
+```
+
+**If the output contains `.nvm`:**
+```bash
+# Install Node 20 with nvm
+nvm install 20
+
+# Set it as default
+nvm alias default 20
+
+# Verify
+node --version
+```
+
+**If the output contains `.asdf`:**
+```bash
+# Install Node 20 with asdf
+asdf install nodejs 20.18.1
+
+# Set it as global default
+asdf global nodejs 20.18.1
+
+# Verify
+node --version
+```
+
+**If the output is `/usr/local/bin/node` or `/opt/homebrew/bin/node` (Homebrew):**
+```bash
+# Upgrade Node with Homebrew
+brew upgrade node
+
+# Verify
+node --version
+```
+
+**If none of these match or you're unsure:**
+```bash
+# Reinstall with Homebrew (simplest option)
+brew install node
+
+# Verify
+node --version
+```
+
+#### 4c. Install Node.js (if you don't have it)
+
+Check if you have a version manager already installed:
+
+```bash
+# Check for nodenv
+command -v nodenv
+
+# Check for nvm
+command -v nvm
+
+# Check for asdf
+command -v asdf
+```
+
+**If any of these exist, use that version manager:**
+
+For nodenv:
+```bash
+nodenv install 20.18.1
+nodenv global 20.18.1
+nodenv rehash
+```
+
+For nvm:
+```bash
+nvm install 20
+nvm alias default 20
+```
+
+For asdf:
+```bash
+asdf plugin add nodejs
+asdf install nodejs 20.18.1
+asdf global nodejs 20.18.1
+```
+
+**If none exist (recommended for most users):**
+```bash
+# Install Node with Homebrew
+brew install node
+
+# Verify
+node --version
+```
+
+You should see version 20 or higher.
+
+### Step 5: Download This Extension
+
+1. Download this repository as a ZIP file (click the green "Code" button, then "Download ZIP")
+2. Unzip the file to a location you'll remember (like your Documents or Desktop folder)
+
+### Step 6: Install Extension Dependencies
+
+In Terminal, navigate to the extension folder. Replace the path with where you saved the folder:
+```bash
+cd ~/Desktop/timetrack-raycast
+```
+
+Or if you put it in Documents:
+```bash
+cd ~/Documents/timetrack-raycast
+```
+
+**Tip:** You can also drag the folder from Finder into Terminal after typing `cd ` (with a space).
+
+Then install the required packages:
+```bash
+npm install
+```
+
+This may take a minute or two.
+
+### Step 7: Load the Extension in Raycast
+
+```bash
+npm run dev
+```
+
+You should see a message that Raycast is watching for changes. The extension is now loaded!
+
+### Step 8: Start Using It!
+
+1. Open Raycast (use your hotkey, typically Cmd+Space)
+2. Type "Track Time" and you should see the Time Tracker commands
+3. The extension is ready to use!
+
+## Troubleshooting
+
+### Node.js Version Issues
+
+**Error: "TypeError: getDefaultHighWaterMark is not a function"**
+- This means you're using Node.js version 18 or lower
+- Follow Step 4b above to upgrade to Node 20 or higher
+
+**"node --version" shows the wrong version after installing**
+1. Close and reopen Terminal completely
+2. Check which Node is being used: `which node`
+3. Check if you have multiple Node installations:
    ```bash
-   cd path/to/timetrack-raycast
+   # List all Node installations
+   brew list node 2>/dev/null && echo "Homebrew Node found"
+   nodenv versions 2>/dev/null && echo "nodenv versions found"
+   nvm list 2>/dev/null && echo "nvm versions found"
+   asdf list nodejs 2>/dev/null && echo "asdf versions found"
    ```
+4. You may have multiple version managers conflicting. Choose one:
+   - **Recommended:** Uninstall others and use Homebrew for simplicity
+   - **Or:** Stick with one version manager (nodenv/nvm/asdf) and uninstall Homebrew's Node
 
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
+**To clean up and start fresh with Homebrew Node:**
+```bash
+# Uninstall Homebrew Node (if exists)
+brew uninstall node 2>/dev/null
 
-4. Load the extension in Raycast:
-   ```bash
-   npm run dev
-   ```
+# Reinstall fresh
+brew install node
 
-5. The extension will now appear in Raycast and is ready to use!
+# Close and reopen Terminal
+# Verify
+node --version
+```
+
+### Installation Issues
+
+**"command not found: npm"**
+- npm comes with Node.js - if missing, your Node installation is incomplete
+- Reinstall Node following Step 4 above
+
+**"command not found: brew"**
+- Make sure you completed Step 3 to install Homebrew
+- If just installed, verify you ran the PATH setup commands Homebrew showed
+- Close and reopen Terminal
+
+**Extension not showing in Raycast**
+- Make sure Terminal is still open with `npm run dev` running
+- Try restarting Raycast: Quit Raycast completely (right-click menu bar icon → Quit) and reopen
+
+**"npm install" fails or shows EACCES permission errors**
+- Never use `sudo npm install` - this causes permission problems
+- If you see permission errors, your npm setup has issues
+- Fix with: `sudo chown -R $(whoami) ~/.npm`
+- Or reinstall Node cleanly following Step 4
 
 ## Usage
 
 ### Track Time
-- Open Raycast (Cmd+Space)
+- Open Raycast (use your hotkey, typically Cmd+Space)
 - Type "Track Time"
 - Enter your client/project name (e.g., "client 1")
 - Press Enter
