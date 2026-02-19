@@ -205,7 +205,7 @@ This may take a minute or two.
 npm run dev
 ```
 
-You should see a message that Raycast is watching for changes. The extension is now loaded!
+You should see a message that Raycast is watching for changes. The extension is now loaded! At this point, you can exit the terminal, and use Track Time in Raycast!
 
 ### Step 8: Start Using It!
 
