@@ -25,7 +25,7 @@ If you don't have Raycast installed:
 
 ### Step 2: Open Terminal
 
-1. Open Spotlight (Cmd+Space if you didn't disable it, or search in Finder)
+1. Open Spotlight or Raycast (Cmd+Space, Opt+Space, or just search in Finder)
 2. Type "Terminal" and press Enter
 
 ### Step 3: Install Homebrew (if needed)
@@ -69,74 +69,101 @@ which node
 ```
 
 **If the output contains `.nodenv`:**
+
+Install Node 20 with nodenv:
 ```bash
-# Install Node 20 with nodenv
 nodenv install 20.18.1
+```
 
-# Set it as your global default
+Set it as your global default:
+```bash
 nodenv global 20.18.1
+```
 
-# Refresh nodenv
+Refresh nodenv:
+```bash
 nodenv rehash
+```
 
-# Verify
+Verify the installation:
+```bash
 node --version
 ```
 
 **If the output contains `.nvm`:**
+
+Install Node 20 with nvm:
 ```bash
-# Install Node 20 with nvm
 nvm install 20
+```
 
-# Set it as default
+Set it as default:
+```bash
 nvm alias default 20
+```
 
-# Verify
+Verify the installation:
+```bash
 node --version
 ```
 
 **If the output contains `.asdf`:**
+
+Install Node 20 with asdf:
 ```bash
-# Install Node 20 with asdf
 asdf install nodejs 20.18.1
+```
 
-# Set it as global default
+Set it as global default:
+```bash
 asdf global nodejs 20.18.1
+```
 
-# Verify
+Verify the installation:
+```bash
 node --version
 ```
 
 **If the output is `/usr/local/bin/node` or `/opt/homebrew/bin/node` (Homebrew):**
-```bash
-# Upgrade Node with Homebrew
-brew upgrade node
 
-# Verify
+Upgrade Node with Homebrew:
+```bash
+brew upgrade node
+```
+
+Verify the installation:
+```bash
 node --version
 ```
 
 **If none of these match or you're unsure:**
-```bash
-# Reinstall with Homebrew (simplest option)
-brew install node
 
-# Verify
+Reinstall with Homebrew (simplest option):
+```bash
+brew install node
+```
+
+Verify the installation:
+```bash
 node --version
 ```
 
 #### 4c. Install Node.js (if you don't have it)
 
-Check if you have a version manager already installed:
+Check if you have a version manager already installed.
 
+Check for nodenv:
 ```bash
-# Check for nodenv
 command -v nodenv
+```
 
-# Check for nvm
+Check for nvm:
+```bash
 command -v nvm
+```
 
-# Check for asdf
+Check for asdf:
+```bash
 command -v asdf
 ```
 
@@ -145,29 +172,42 @@ command -v asdf
 For nodenv:
 ```bash
 nodenv install 20.18.1
+```
+```bash
 nodenv global 20.18.1
+```
+```bash
 nodenv rehash
 ```
 
 For nvm:
 ```bash
 nvm install 20
+```
+```bash
 nvm alias default 20
 ```
 
 For asdf:
 ```bash
 asdf plugin add nodejs
+```
+```bash
 asdf install nodejs 20.18.1
+```
+```bash
 asdf global nodejs 20.18.1
 ```
 
 **If none exist (recommended for most users):**
-```bash
-# Install Node with Homebrew
-brew install node
 
-# Verify
+Install Node with Homebrew:
+```bash
+brew install node
+```
+
+Verify the installation:
+```bash
 node --version
 ```
 
@@ -180,14 +220,14 @@ You should see version 20 or higher.
 
 ### Step 6: Install Extension Dependencies
 
-In Terminal, navigate to the extension folder. Replace the path with where you saved the folder:
+In Terminal, navigate to the extension folder. Replace the path with where you saved the folder (assuming in this example you downloaded the main branch):
 ```bash
-cd ~/Desktop/timetrack-raycast
+cd ~/Desktop/timetrack-raycast-main
 ```
 
 Or if you put it in Documents:
 ```bash
-cd ~/Documents/timetrack-raycast
+cd ~/Documents/timetrack-raycast-main
 ```
 
 **Tip:** You can also drag the folder from Finder into Terminal after typing `cd ` (with a space).
@@ -223,29 +263,50 @@ You should see a message that Raycast is watching for changes. The extension is 
 
 **"node --version" shows the wrong version after installing**
 1. Close and reopen Terminal completely
-2. Check which Node is being used: `which node`
-3. Check if you have multiple Node installations:
+2. Check which Node is being used:
    ```bash
-   # List all Node installations
+   which node
+   ```
+3. Check if you have multiple Node installations:
+
+   Check for Homebrew Node:
+   ```bash
    brew list node 2>/dev/null && echo "Homebrew Node found"
+   ```
+
+   Check for nodenv versions:
+   ```bash
    nodenv versions 2>/dev/null && echo "nodenv versions found"
+   ```
+
+   Check for nvm versions:
+   ```bash
    nvm list 2>/dev/null && echo "nvm versions found"
+   ```
+
+   Check for asdf versions:
+   ```bash
    asdf list nodejs 2>/dev/null && echo "asdf versions found"
    ```
+
 4. You may have multiple version managers conflicting. Choose one:
    - **Recommended:** Uninstall others and use Homebrew for simplicity
    - **Or:** Stick with one version manager (nodenv/nvm/asdf) and uninstall Homebrew's Node
 
 **To clean up and start fresh with Homebrew Node:**
+
+Uninstall Homebrew Node (if exists):
 ```bash
-# Uninstall Homebrew Node (if exists)
 brew uninstall node 2>/dev/null
+```
 
-# Reinstall fresh
+Reinstall fresh:
+```bash
 brew install node
+```
 
-# Close and reopen Terminal
-# Verify
+Close and reopen Terminal, then verify:
+```bash
 node --version
 ```
 
