@@ -1,6 +1,6 @@
-import { showToast, Toast, LaunchProps, popToRoot, confirmAlert, Alert, Icon } from "@raycast/api";
-import { useState } from "react";
-import { TimeTracker } from "./timeTracker";
+import { showToast, Toast, LaunchProps, popToRoot, confirmAlert, Alert, Icon, Detail } from "@raycast/api";
+import { useEffect, useRef, useState } from "react";
+import { TimeTracker, ActiveTracking } from "./timeTracker";
 import { LongSessionHandler } from "./long-session-handler";
 
 interface TrackArguments {
@@ -9,33 +9,45 @@ interface TrackArguments {
 
 export default function Command(props: LaunchProps<{ arguments: TrackArguments }>) {
   const { client } = props.arguments;
-  const tracker = new TimeTracker();
   const [showLongSessionForm, setShowLongSessionForm] = useState(false);
+  const [activeTracking, setActiveTracking] = useState<ActiveTracking | null>(null);
+  const hasRun = useRef(false);
 
-  // Check for long-running active session before stopping it
-  const activeTracking = tracker.getActiveTracking();
-  if (activeTracking && !showLongSessionForm) {
-    const idleMinutes = tracker.getIdleMinutes();
-    if (idleMinutes > 60) {
-      setShowLongSessionForm(true);
+  useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
+    async function run() {
+      const tracker = new TimeTracker();
+      const active = tracker.getActiveTracking();
+
+      if (active) {
+        const idleMinutes = tracker.getIdleMinutes();
+        if (idleMinutes > 60) {
+          setActiveTracking(active);
+          setShowLongSessionForm(true);
+          return;
+        }
+      }
+
+      await performTracking(client);
     }
-  }
+
+    run();
+  }, []);
 
   if (showLongSessionForm && activeTracking) {
     return (
       <LongSessionHandler
         activeTracking={activeTracking}
         onComplete={async () => {
-          // After handling long session, start tracking the new client
           await startNewTracking(client);
         }}
       />
     );
   }
 
-  // No long session, proceed with normal flow
-  performTracking(client);
-  return null;
+  return <Detail isLoading={true} markdown="" />;
 }
 
 async function performTracking(client: string) {
