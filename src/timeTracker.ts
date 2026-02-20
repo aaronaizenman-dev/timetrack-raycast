@@ -81,13 +81,16 @@ export class TimeTracker {
   }
 
   stopTracking(): TimeEntry | null {
+    return this.stopTrackingWithEndTime(new Date());
+  }
+
+  stopTrackingWithEndTime(endTime: Date): TimeEntry | null {
     const active = this.getActiveTracking();
 
     if (!active) {
       return null;
     }
 
-    const endTime = new Date();
     const actualMinutes = Math.round((endTime.getTime() - active.startTime.getTime()) / 60000);
     const durationMinutes = this.roundDuration(actualMinutes);
 
@@ -105,6 +108,12 @@ export class TimeTracker {
     }
 
     return entry;
+  }
+
+  discardActiveTracking(): void {
+    if (fs.existsSync(ACTIVE_FILE)) {
+      fs.unlinkSync(ACTIVE_FILE);
+    }
   }
 
   private appendEntry(entry: TimeEntry): void {

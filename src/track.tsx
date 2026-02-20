@@ -1,13 +1,44 @@
 import { showToast, Toast, LaunchProps, popToRoot, confirmAlert, Alert, Icon } from "@raycast/api";
+import { useState } from "react";
 import { TimeTracker } from "./timeTracker";
+import { LongSessionHandler } from "./long-session-handler";
 
 interface TrackArguments {
   client: string;
 }
 
-export default async function Command(props: LaunchProps<{ arguments: TrackArguments }>) {
+export default function Command(props: LaunchProps<{ arguments: TrackArguments }>) {
   const { client } = props.arguments;
+  const tracker = new TimeTracker();
+  const [showLongSessionForm, setShowLongSessionForm] = useState(false);
 
+  // Check for long-running active session before stopping it
+  const activeTracking = tracker.getActiveTracking();
+  if (activeTracking && !showLongSessionForm) {
+    const idleMinutes = tracker.getIdleMinutes();
+    if (idleMinutes > 60) {
+      setShowLongSessionForm(true);
+    }
+  }
+
+  if (showLongSessionForm && activeTracking) {
+    return (
+      <LongSessionHandler
+        activeTracking={activeTracking}
+        onComplete={async () => {
+          // After handling long session, start tracking the new client
+          await startNewTracking(client);
+        }}
+      />
+    );
+  }
+
+  // No long session, proceed with normal flow
+  performTracking(client);
+  return null;
+}
+
+async function performTracking(client: string) {
   if (!client || client.trim().length === 0) {
     await showToast({
       style: Toast.Style.Failure,
@@ -66,7 +97,11 @@ export default async function Command(props: LaunchProps<{ arguments: TrackArgum
     }
   }
 
-  // Now start tracking the new client
+  await startNewTracking(client);
+}
+
+async function startNewTracking(client: string) {
+  const tracker = new TimeTracker();
   const result = tracker.startTracking(client.trim());
 
   if (result.previousClient) {
