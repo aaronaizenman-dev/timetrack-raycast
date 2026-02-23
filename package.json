@@ -54,7 +54,7 @@
       "description": "View time tracking report",
       "mode": "view"
     },
-{
+    {
       "name": "manage-entries",
       "title": "Manage Time Entries",
       "description": "View, add, edit, or delete time entries",
@@ -68,7 +68,7 @@
     }
   ],
   "dependencies": {
-    "@raycast/api": "^1.83.2",
+    "@raycast/api": "^1.104.6",
     "@raycast/utils": "^1.17.0"
   },
   "devDependencies": {
