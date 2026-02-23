@@ -25,6 +25,8 @@ declare namespace Preferences {
   export type IdleCheck = ExtensionPreferences & {}
   /** Preferences accessible in the `manage-entries` command */
   export type ManageEntries = ExtensionPreferences & {}
+  /** Preferences accessible in the `summary` command */
+  export type Summary = ExtensionPreferences & {}
 }
 
 declare namespace Arguments {
@@ -43,5 +45,7 @@ declare namespace Arguments {
   export type IdleCheck = {}
   /** Arguments passed to the `manage-entries` command */
   export type ManageEntries = {}
+  /** Arguments passed to the `summary` command */
+  export type Summary = {}
 }
 

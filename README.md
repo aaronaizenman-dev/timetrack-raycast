@@ -358,6 +358,17 @@ This will stop the current timer and save your time entry without starting a new
 - Type "Time Report"
 - Use the dropdown to select time range (Today, Last 7 Days, Last 30 Days, All Time)
 
+### View Summary Dashboard
+- Open Raycast
+- Type "Time Summary"
+- See a distribution chart showing relative time per client and weekly breakdowns
+- Switch between Last 7 Days, Last 30 Days, Last 3 Months, or All Time
+
+### Manage Entries
+- Open Raycast
+- Type "Manage Time Entries"
+- Add, edit, or delete individual time entries
+
 ## Data Storage
 
 Time entries are stored in:
@@ -376,5 +387,4 @@ client,startTime,endTime,durationMinutes
 - Kantata integration for syncing time entries
 - Custom date range reports
 - Export to other formats
-- Edit/delete entries
 - Project tags and categories
