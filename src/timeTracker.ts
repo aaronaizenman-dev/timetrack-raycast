@@ -138,19 +138,29 @@ export class TimeTracker {
     }
 
     const content = fs.readFileSync(ENTRIES_FILE, "utf-8");
-    const lines = content.trim().split("\n").slice(1); // Skip header
+    const lines = content.replace(/\r/g, "").trim().split("\n").slice(1); // Skip header
 
     return lines
       .filter((line) => line.trim().length > 0)
       .map((line): TimeEntry | null => {
-        const matches = line.match(/"([^"]*)","([^"]*)","([^"]*)",(\d+)/);
-        if (!matches) return null;
+        // Support both quoted ("val","val") and unquoted (val,val) CSV fields
+        const quoted = line.match(/"([^"]*)","([^"]*)","([^"]*)",(\d+)/);
+        if (quoted) {
+          return {
+            client: quoted[1],
+            startTime: new Date(quoted[2]),
+            endTime: new Date(quoted[3]),
+            durationMinutes: parseInt(quoted[4], 10),
+          };
+        }
+        const unquoted = line.match(/^([^,]+),([^,]+),([^,]+),(\d+)$/);
+        if (!unquoted) return null;
 
         return {
-          client: matches[1],
-          startTime: new Date(matches[2]),
-          endTime: new Date(matches[3]),
-          durationMinutes: parseInt(matches[4], 10),
+          client: unquoted[1],
+          startTime: new Date(unquoted[2]),
+          endTime: new Date(unquoted[3]),
+          durationMinutes: parseInt(unquoted[4], 10),
         };
       })
       .filter((entry): entry is TimeEntry => entry !== null);
