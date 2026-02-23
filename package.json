@@ -54,14 +54,7 @@
       "description": "View time tracking report",
       "mode": "view"
     },
-    {
-      "name": "idle-check",
-      "title": "Check for Idle Tracking",
-      "description": "Background command that checks for idle time tracking",
-      "mode": "no-view",
-      "interval": "30m"
-    },
-    {
+{
       "name": "manage-entries",
       "title": "Manage Time Entries",
       "description": "View, add, edit, or delete time entries",
