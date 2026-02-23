@@ -1,11 +1,21 @@
-import { showToast, Toast, popToRoot, Detail, confirmAlert, Alert, Icon } from "@raycast/api";
+import {
+  showToast,
+  Toast,
+  popToRoot,
+  Detail,
+  confirmAlert,
+  Alert,
+  Icon,
+} from "@raycast/api";
 import { useEffect, useRef, useState } from "react";
 import { TimeTracker, ActiveTracking } from "./timeTracker";
 import { LongSessionHandler } from "./long-session-handler";
 
 export default function Command() {
   const [showLongSessionForm, setShowLongSessionForm] = useState(false);
-  const [activeTracking, setActiveTracking] = useState<ActiveTracking | null>(null);
+  const [activeTracking, setActiveTracking] = useState<ActiveTracking | null>(
+    null,
+  );
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -58,7 +68,7 @@ export default function Command() {
       const active = tracker.getActiveTracking();
       if (active) {
         const sessionMinutes = Math.round(
-          (new Date().getTime() - active.startTime.getTime()) / 60000
+          (new Date().getTime() - active.startTime.getTime()) / 60000,
         );
         if (sessionMinutes > 60) {
           setActiveTracking(active);

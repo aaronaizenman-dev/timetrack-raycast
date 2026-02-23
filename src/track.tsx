@@ -1,4 +1,13 @@
-import { showToast, Toast, LaunchProps, popToRoot, confirmAlert, Alert, Icon, Detail } from "@raycast/api";
+import {
+  showToast,
+  Toast,
+  LaunchProps,
+  popToRoot,
+  confirmAlert,
+  Alert,
+  Icon,
+  Detail,
+} from "@raycast/api";
 import { useEffect, useRef, useState } from "react";
 import { TimeTracker, ActiveTracking } from "./timeTracker";
 import { LongSessionHandler } from "./long-session-handler";
@@ -7,10 +16,14 @@ interface TrackArguments {
   client: string;
 }
 
-export default function Command(props: LaunchProps<{ arguments: TrackArguments }>) {
+export default function Command(
+  props: LaunchProps<{ arguments: TrackArguments }>,
+) {
   const { client } = props.arguments;
   const [showLongSessionForm, setShowLongSessionForm] = useState(false);
-  const [activeTracking, setActiveTracking] = useState<ActiveTracking | null>(null);
+  const [activeTracking, setActiveTracking] = useState<ActiveTracking | null>(
+    null,
+  );
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -65,7 +78,8 @@ async function performTracking(client: string) {
   // Check for pending idle confirmation
   const idleState = tracker.getIdleState();
   if (idleState) {
-    const isSameClient = idleState.client.toLowerCase() === client.trim().toLowerCase();
+    const isSameClient =
+      idleState.client.toLowerCase() === client.trim().toLowerCase();
     const message = isSameClient
       ? `You were tracking "${idleState.client}". Have you been working on this during the idle time?`
       : `You were tracking "${idleState.client}". Have you been working on this? (You'll then switch to "${client.trim()}")`;

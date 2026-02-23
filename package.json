@@ -4,7 +4,19 @@
   "title": "Time Tracker",
   "description": "Simple time tracking for clients and projects",
   "icon": "icon.png",
-  "author": "aaronaizenman",
+  "author": "aarona",
+  "categories": [
+    "Productivity"
+  ],
+  "keywords": [
+    "time",
+    "tracking",
+    "timer",
+    "productivity",
+    "clients",
+    "billing",
+    "hours"
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0"

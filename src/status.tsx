@@ -1,4 +1,14 @@
-import { List, ActionPanel, Action, Icon, Color, confirmAlert, Alert, showToast, Toast } from "@raycast/api";
+import {
+  List,
+  ActionPanel,
+  Action,
+  Icon,
+  Color,
+  confirmAlert,
+  Alert,
+  showToast,
+  Toast,
+} from "@raycast/api";
 import { TimeTracker } from "./timeTracker";
 import { useEffect, useState } from "react";
 
@@ -6,7 +16,9 @@ export default function Command() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeClient, setActiveClient] = useState<string | null>(null);
   const [activeStartTime, setActiveStartTime] = useState<Date | null>(null);
-  const [todaySummary, setTodaySummary] = useState<Map<string, number>>(new Map());
+  const [todaySummary, setTodaySummary] = useState<Map<string, number>>(
+    new Map(),
+  );
 
   useEffect(() => {
     const handleIdleConfirmation = async () => {
@@ -81,7 +93,9 @@ export default function Command() {
   const getCurrentDuration = (): string => {
     if (!activeStartTime) return "0m";
     const now = new Date();
-    const minutes = Math.round((now.getTime() - activeStartTime.getTime()) / 60000);
+    const minutes = Math.round(
+      (now.getTime() - activeStartTime.getTime()) / 60000,
+    );
     return tracker.formatDuration(minutes);
   };
 
@@ -100,7 +114,11 @@ export default function Command() {
             ]}
             actions={
               <ActionPanel>
-                <Action title="Stop Tracking" icon={Icon.Stop} onAction={stopTracking} />
+                <Action
+                  title="Stop Tracking"
+                  icon={Icon.Stop}
+                  onAction={stopTracking}
+                />
               </ActionPanel>
             }
           />
@@ -119,7 +137,10 @@ export default function Command() {
                 title={client}
                 accessories={[
                   {
-                    tag: { value: tracker.formatDuration(minutes), color: Color.Blue },
+                    tag: {
+                      value: tracker.formatDuration(minutes),
+                      color: Color.Blue,
+                    },
                     icon: Icon.Clock,
                   },
                 ]}

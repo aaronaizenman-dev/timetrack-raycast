@@ -62,7 +62,10 @@ export default function Command() {
 
     const weeks = groupEntriesByWeek(entries);
     const clientSummaries = buildClientSummaries(entries);
-    const totalMinutes = entries.reduce((sum, e) => sum + (e.durationMinutes || 0), 0);
+    const totalMinutes = entries.reduce(
+      (sum, e) => sum + (e.durationMinutes || 0),
+      0,
+    );
 
     const md = renderMarkdown(clientSummaries, weeks, totalMinutes);
     setMarkdown(md);
@@ -108,7 +111,9 @@ export default function Command() {
       week.totalMinutes += entry.durationMinutes || 0;
     }
 
-    return Array.from(weekMap.values()).sort((a, b) => b.weekStart.getTime() - a.weekStart.getTime());
+    return Array.from(weekMap.values()).sort(
+      (a, b) => b.weekStart.getTime() - a.weekStart.getTime(),
+    );
   };
 
   const buildClientSummaries = (entries: TimeEntry[]): ClientSummary[] => {
@@ -151,7 +156,11 @@ export default function Command() {
     }
   };
 
-  const renderMarkdown = (clients: ClientSummary[], weeks: WeekBreakdown[], totalMinutes: number): string => {
+  const renderMarkdown = (
+    clients: ClientSummary[],
+    weeks: WeekBreakdown[],
+    totalMinutes: number,
+  ): string => {
     if (clients.length === 0) {
       return `# Time Summary – ${getTimeRangeTitle()}\n\nNo time entries found for this period.`;
     }
@@ -166,7 +175,9 @@ export default function Command() {
     md += `## Distribution\n\n`;
 
     const maxClientLen = Math.max(...clients.map((c) => c.client.length));
-    const maxDurLen = Math.max(...clients.map((c) => tracker.formatDuration(c.totalMinutes).length));
+    const maxDurLen = Math.max(
+      ...clients.map((c) => tracker.formatDuration(c.totalMinutes).length),
+    );
 
     md += "```\n";
     for (const c of clients) {
@@ -187,10 +198,15 @@ export default function Command() {
       md += `| Client | Hours | % of Week |\n`;
       md += `|--------|-------|-----------|\n`;
 
-      const sortedClients = Array.from(week.clients.entries()).sort((a, b) => b[1] - a[1]);
+      const sortedClients = Array.from(week.clients.entries()).sort(
+        (a, b) => b[1] - a[1],
+      );
 
       for (const [client, minutes] of sortedClients) {
-        const pct = week.totalMinutes > 0 ? ((minutes / week.totalMinutes) * 100).toFixed(1) : "0.0";
+        const pct =
+          week.totalMinutes > 0
+            ? ((minutes / week.totalMinutes) * 100).toFixed(1)
+            : "0.0";
         md += `| ${client} | ${tracker.formatDuration(minutes)} | ${pct}% |\n`;
       }
 
@@ -210,20 +226,56 @@ export default function Command() {
           <Detail.Metadata.Label title="Period" text={getTimeRangeTitle()} />
           <Detail.Metadata.Separator />
           <Detail.Metadata.TagList title="Range">
-            <Detail.Metadata.TagList.Item text="7 Days" color={timeRange === "week" ? "#007AFF" : "#888888"} onAction={() => setTimeRange("week")} />
-            <Detail.Metadata.TagList.Item text="30 Days" color={timeRange === "month" ? "#007AFF" : "#888888"} onAction={() => setTimeRange("month")} />
-            <Detail.Metadata.TagList.Item text="3 Months" color={timeRange === "quarter" ? "#007AFF" : "#888888"} onAction={() => setTimeRange("quarter")} />
-            <Detail.Metadata.TagList.Item text="All Time" color={timeRange === "all" ? "#007AFF" : "#888888"} onAction={() => setTimeRange("all")} />
+            <Detail.Metadata.TagList.Item
+              text="7 Days"
+              color={timeRange === "week" ? "#007AFF" : "#888888"}
+              onAction={() => setTimeRange("week")}
+            />
+            <Detail.Metadata.TagList.Item
+              text="30 Days"
+              color={timeRange === "month" ? "#007AFF" : "#888888"}
+              onAction={() => setTimeRange("month")}
+            />
+            <Detail.Metadata.TagList.Item
+              text="3 Months"
+              color={timeRange === "quarter" ? "#007AFF" : "#888888"}
+              onAction={() => setTimeRange("quarter")}
+            />
+            <Detail.Metadata.TagList.Item
+              text="All Time"
+              color={timeRange === "all" ? "#007AFF" : "#888888"}
+              onAction={() => setTimeRange("all")}
+            />
           </Detail.Metadata.TagList>
         </Detail.Metadata>
       }
       actions={
         <ActionPanel>
-          <Action title="Refresh" icon={Icon.ArrowClockwise} onAction={loadData} />
-          <Action title="Last 7 Days" icon={Icon.Calendar} onAction={() => setTimeRange("week")} />
-          <Action title="Last 30 Days" icon={Icon.Calendar} onAction={() => setTimeRange("month")} />
-          <Action title="Last 3 Months" icon={Icon.Calendar} onAction={() => setTimeRange("quarter")} />
-          <Action title="All Time" icon={Icon.Calendar} onAction={() => setTimeRange("all")} />
+          <Action
+            title="Refresh"
+            icon={Icon.ArrowClockwise}
+            onAction={loadData}
+          />
+          <Action
+            title="Last 7 Days"
+            icon={Icon.Calendar}
+            onAction={() => setTimeRange("week")}
+          />
+          <Action
+            title="Last 30 Days"
+            icon={Icon.Calendar}
+            onAction={() => setTimeRange("month")}
+          />
+          <Action
+            title="Last 3 Months"
+            icon={Icon.Calendar}
+            onAction={() => setTimeRange("quarter")}
+          />
+          <Action
+            title="All Time"
+            icon={Icon.Calendar}
+            onAction={() => setTimeRange("all")}
+          />
         </ActionPanel>
       }
     />

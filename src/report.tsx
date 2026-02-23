@@ -75,11 +75,16 @@ export default function Command() {
 
       const dayBreakdown = dayMap.get(dateString)!;
       const currentMinutes = dayBreakdown.clients.get(entry.client) || 0;
-      dayBreakdown.clients.set(entry.client, currentMinutes + (entry.durationMinutes || 0));
+      dayBreakdown.clients.set(
+        entry.client,
+        currentMinutes + (entry.durationMinutes || 0),
+      );
       dayBreakdown.totalMinutes += entry.durationMinutes || 0;
     }
 
-    return Array.from(dayMap.values()).sort((a, b) => b.date.getTime() - a.date.getTime());
+    return Array.from(dayMap.values()).sort(
+      (a, b) => b.date.getTime() - a.date.getTime(),
+    );
   };
 
   const formatDate = (date: Date): string => {
@@ -96,7 +101,11 @@ export default function Command() {
     } else if (dateToCheck.getTime() === yesterday.getTime()) {
       return "Yesterday";
     } else {
-      return date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+      return date.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      });
     }
   };
 
@@ -121,7 +130,11 @@ export default function Command() {
     <List
       isLoading={isLoading}
       searchBarAccessory={
-        <List.Dropdown tooltip="Select Time Range" value={timeRange} onChange={(newValue) => setTimeRange(newValue as TimeRange)}>
+        <List.Dropdown
+          tooltip="Select Time Range"
+          value={timeRange}
+          onChange={(newValue) => setTimeRange(newValue as TimeRange)}
+        >
           <List.Dropdown.Item title="Today" value="today" />
           <List.Dropdown.Item title="Last 7 Days" value="week" />
           <List.Dropdown.Item title="Last 30 Days" value="month" />
@@ -140,7 +153,10 @@ export default function Command() {
               {Array.from(dayBreakdown.clients.entries())
                 .sort((a, b) => b[1] - a[1])
                 .map(([client, minutes]) => {
-                  const percentage = dayBreakdown.totalMinutes > 0 ? ((minutes / dayBreakdown.totalMinutes) * 100).toFixed(1) : "0";
+                  const percentage =
+                    dayBreakdown.totalMinutes > 0
+                      ? ((minutes / dayBreakdown.totalMinutes) * 100).toFixed(1)
+                      : "0";
                   return (
                     <List.Item
                       key={`${dayBreakdown.dateString}-${client}`}
@@ -148,13 +164,20 @@ export default function Command() {
                       subtitle={`${percentage}%`}
                       accessories={[
                         {
-                          tag: { value: tracker.formatDuration(minutes), color: Color.Blue },
+                          tag: {
+                            value: tracker.formatDuration(minutes),
+                            color: Color.Blue,
+                          },
                           icon: Icon.Clock,
                         },
                       ]}
                       actions={
                         <ActionPanel>
-                          <Action title="Refresh" icon={Icon.ArrowClockwise} onAction={loadData} />
+                          <Action
+                            title="Refresh"
+                            icon={Icon.ArrowClockwise}
+                            onAction={loadData}
+                          />
                         </ActionPanel>
                       }
                     />
@@ -162,12 +185,18 @@ export default function Command() {
                 })}
             </List.Section>
           ))}
-          <List.Section title="Summary" subtitle={`${getTimeRangeLabel()} Total`}>
+          <List.Section
+            title="Summary"
+            subtitle={`${getTimeRangeLabel()} Total`}
+          >
             <List.Item
               title="Total Time Tracked"
               accessories={[
                 {
-                  tag: { value: tracker.formatDuration(getTotalTime()), color: Color.Green },
+                  tag: {
+                    value: tracker.formatDuration(getTotalTime()),
+                    color: Color.Green,
+                  },
                   icon: Icon.Clock,
                 },
               ]}

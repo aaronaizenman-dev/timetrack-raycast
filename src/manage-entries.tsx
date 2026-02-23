@@ -59,10 +59,14 @@ export default function Command() {
 
     // Sort entries within each day by start time (most recent first)
     for (const group of dayMap.values()) {
-      group.entries.sort((a, b) => b.startTime.getTime() - a.startTime.getTime());
+      group.entries.sort(
+        (a, b) => b.startTime.getTime() - a.startTime.getTime(),
+      );
     }
 
-    return Array.from(dayMap.values()).sort((a, b) => b.date.getTime() - a.date.getTime());
+    return Array.from(dayMap.values()).sort(
+      (a, b) => b.date.getTime() - a.date.getTime(),
+    );
   };
 
   const formatDate = (date: Date): string => {
@@ -79,7 +83,12 @@ export default function Command() {
     } else if (dateToCheck.getTime() === yesterday.getTime()) {
       return "Yesterday";
     } else {
-      return date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+      return date.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
     }
   };
 
@@ -133,7 +142,9 @@ export default function Command() {
         <List.Section
           key={group.dateString}
           title={group.dateString}
-          subtitle={tracker.formatDuration(group.entries.reduce((sum, e) => sum + (e.durationMinutes || 0), 0))}
+          subtitle={tracker.formatDuration(
+            group.entries.reduce((sum, e) => sum + (e.durationMinutes || 0), 0),
+          )}
         >
           {group.entries.map((entry, index) => (
             <List.Item
@@ -142,16 +153,35 @@ export default function Command() {
               subtitle={`${entry.startTime.toLocaleTimeString()} - ${entry.endTime?.toLocaleTimeString()}`}
               accessories={[
                 {
-                  tag: { value: tracker.formatDuration(entry.durationMinutes || 0), color: Color.Blue },
+                  tag: {
+                    value: tracker.formatDuration(entry.durationMinutes || 0),
+                    color: Color.Blue,
+                  },
                   icon: Icon.Clock,
                 },
               ]}
               actions={
                 <ActionPanel>
-                  <Action title="Edit Entry" icon={Icon.Pencil} onAction={() => handleEdit(entry)} />
-                  <Action title="Delete Entry" icon={Icon.Trash} onAction={() => handleDelete(entry)} />
-                  <Action title="Add New Entry" icon={Icon.Plus} onAction={handleAdd} />
-                  <Action title="Refresh" icon={Icon.ArrowClockwise} onAction={loadData} />
+                  <Action
+                    title="Edit Entry"
+                    icon={Icon.Pencil}
+                    onAction={() => handleEdit(entry)}
+                  />
+                  <Action
+                    title="Delete Entry"
+                    icon={Icon.Trash}
+                    onAction={() => handleDelete(entry)}
+                  />
+                  <Action
+                    title="Add New Entry"
+                    icon={Icon.Plus}
+                    onAction={handleAdd}
+                  />
+                  <Action
+                    title="Refresh"
+                    icon={Icon.ArrowClockwise}
+                    onAction={loadData}
+                  />
                 </ActionPanel>
               }
             />
@@ -221,7 +251,12 @@ function AddEntryForm({ onAdd }: { onAdd: () => void }) {
     const endHour = parseInt(endParts[0], 10);
     const endMinute = parseInt(endParts[1], 10);
 
-    if (isNaN(startHour) || isNaN(startMinute) || isNaN(endHour) || isNaN(endMinute)) {
+    if (
+      isNaN(startHour) ||
+      isNaN(startMinute) ||
+      isNaN(endHour) ||
+      isNaN(endMinute)
+    ) {
       setStartTimeError("Invalid time format");
       setEndTimeError("Invalid time format");
       return;
@@ -262,7 +297,11 @@ function AddEntryForm({ onAdd }: { onAdd: () => void }) {
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Add Entry" icon={Icon.Check} onSubmit={handleSubmit} />
+          <Action.SubmitForm
+            title="Add Entry"
+            icon={Icon.Check}
+            onSubmit={handleSubmit}
+          />
         </ActionPanel>
       }
     >
@@ -273,7 +312,12 @@ function AddEntryForm({ onAdd }: { onAdd: () => void }) {
         error={clientError}
         onChange={() => setClientError(undefined)}
       />
-      <Form.DatePicker id="date" title="Date" error={dateError} onChange={() => setDateError(undefined)} />
+      <Form.DatePicker
+        id="date"
+        title="Date"
+        error={dateError}
+        onChange={() => setDateError(undefined)}
+      />
       <Form.TextField
         id="startTime"
         title="Start Time"
@@ -293,7 +337,13 @@ function AddEntryForm({ onAdd }: { onAdd: () => void }) {
   );
 }
 
-function EditEntryForm({ entry, onEdit }: { entry: TimeEntry; onEdit: () => void }) {
+function EditEntryForm({
+  entry,
+  onEdit,
+}: {
+  entry: TimeEntry;
+  onEdit: () => void;
+}) {
   const { pop } = useNavigation();
   const [clientError, setClientError] = useState<string | undefined>();
   const [dateError, setDateError] = useState<string | undefined>();
@@ -350,7 +400,12 @@ function EditEntryForm({ entry, onEdit }: { entry: TimeEntry; onEdit: () => void
     const endHour = parseInt(endParts[0], 10);
     const endMinute = parseInt(endParts[1], 10);
 
-    if (isNaN(startHour) || isNaN(startMinute) || isNaN(endHour) || isNaN(endMinute)) {
+    if (
+      isNaN(startHour) ||
+      isNaN(startMinute) ||
+      isNaN(endHour) ||
+      isNaN(endMinute)
+    ) {
       setStartTimeError("Invalid time format");
       setEndTimeError("Invalid time format");
       return;
@@ -370,7 +425,9 @@ function EditEntryForm({ entry, onEdit }: { entry: TimeEntry; onEdit: () => void
 
     try {
       const tracker = new TimeTracker();
-      const actualMinutes = Math.round((endTime.getTime() - startTime.getTime()) / 60000);
+      const actualMinutes = Math.round(
+        (endTime.getTime() - startTime.getTime()) / 60000,
+      );
       const updatedEntry: TimeEntry = {
         client: values.client,
         startTime,
@@ -399,7 +456,11 @@ function EditEntryForm({ entry, onEdit }: { entry: TimeEntry; onEdit: () => void
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Update Entry" icon={Icon.Check} onSubmit={handleSubmit} />
+          <Action.SubmitForm
+            title="Update Entry"
+            icon={Icon.Check}
+            onSubmit={handleSubmit}
+          />
         </ActionPanel>
       }
     >

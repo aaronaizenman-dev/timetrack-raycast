@@ -35,7 +35,10 @@ export class TimeTracker {
     }
 
     if (!fs.existsSync(ENTRIES_FILE)) {
-      fs.writeFileSync(ENTRIES_FILE, "client,startTime,endTime,durationMinutes\n");
+      fs.writeFileSync(
+        ENTRIES_FILE,
+        "client,startTime,endTime,durationMinutes\n",
+      );
     }
   }
 
@@ -50,14 +53,20 @@ export class TimeTracker {
       return {
         ...active,
         startTime: new Date(active.startTime),
-        lastActivityTime: active.lastActivityTime ? new Date(active.lastActivityTime) : new Date(active.startTime),
+        lastActivityTime: active.lastActivityTime
+          ? new Date(active.lastActivityTime)
+          : new Date(active.startTime),
       };
     } catch (error) {
       return null;
     }
   }
 
-  startTracking(client: string): { previousClient?: string; newClient: string; startTime: Date } {
+  startTracking(client: string): {
+    previousClient?: string;
+    newClient: string;
+    startTime: Date;
+  } {
     const active = this.getActiveTracking();
     const now = new Date();
 
@@ -91,7 +100,9 @@ export class TimeTracker {
       return null;
     }
 
-    const actualMinutes = Math.round((endTime.getTime() - active.startTime.getTime()) / 60000);
+    const actualMinutes = Math.round(
+      (endTime.getTime() - active.startTime.getTime()) / 60000,
+    );
     const durationMinutes = this.roundDuration(actualMinutes);
 
     const entry: TimeEntry = {
@@ -283,7 +294,10 @@ export class TimeTracker {
     const now = new Date();
 
     // Create entry from original start to pause time
-    const firstActualMinutes = Math.round((idleState.pauseTime.getTime() - idleState.originalStartTime.getTime()) / 60000);
+    const firstActualMinutes = Math.round(
+      (idleState.pauseTime.getTime() - idleState.originalStartTime.getTime()) /
+        60000,
+    );
     const firstEntry: TimeEntry = {
       client: idleState.client,
       startTime: idleState.originalStartTime,
@@ -293,7 +307,9 @@ export class TimeTracker {
     this.appendEntry(firstEntry);
 
     // Create entry from pause time to now (counting the paused period)
-    const secondActualMinutes = Math.round((now.getTime() - idleState.pauseTime.getTime()) / 60000);
+    const secondActualMinutes = Math.round(
+      (now.getTime() - idleState.pauseTime.getTime()) / 60000,
+    );
     const secondEntry: TimeEntry = {
       client: idleState.client,
       startTime: idleState.pauseTime,
@@ -316,7 +332,10 @@ export class TimeTracker {
 
   stopFromIdle(idleState: IdleState): void {
     // Create entry from original start to pause time only (not counting paused period)
-    const actualMinutes = Math.round((idleState.pauseTime.getTime() - idleState.originalStartTime.getTime()) / 60000);
+    const actualMinutes = Math.round(
+      (idleState.pauseTime.getTime() - idleState.originalStartTime.getTime()) /
+        60000,
+    );
     const entry: TimeEntry = {
       client: idleState.client,
       startTime: idleState.originalStartTime,
@@ -331,7 +350,9 @@ export class TimeTracker {
 
   // Manual entry management
   addEntry(client: string, startTime: Date, endTime: Date): TimeEntry {
-    const actualMinutes = Math.round((endTime.getTime() - startTime.getTime()) / 60000);
+    const actualMinutes = Math.round(
+      (endTime.getTime() - startTime.getTime()) / 60000,
+    );
     const durationMinutes = this.roundDuration(actualMinutes);
 
     const entry: TimeEntry = {

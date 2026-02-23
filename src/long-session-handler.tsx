@@ -15,11 +15,18 @@ interface LongSessionHandlerProps {
   onComplete: () => void;
 }
 
-export function LongSessionHandler({ activeTracking, onComplete }: LongSessionHandlerProps) {
-  const [selectedOption, setSelectedOption] = useState<"one_hour" | "custom_time" | "keep_full">("one_hour");
+export function LongSessionHandler({
+  activeTracking,
+  onComplete,
+}: LongSessionHandlerProps) {
+  const [selectedOption, setSelectedOption] = useState<
+    "one_hour" | "custom_time" | "keep_full"
+  >("one_hour");
   const [customTime, setCustomTime] = useState<Date>(new Date());
 
-  const totalMinutes = Math.round((new Date().getTime() - activeTracking.startTime.getTime()) / 60000);
+  const totalMinutes = Math.round(
+    (new Date().getTime() - activeTracking.startTime.getTime()) / 60000,
+  );
   const hours = Math.floor(totalMinutes / 60);
   const mins = totalMinutes % 60;
   const durationText = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
@@ -57,7 +64,9 @@ export function LongSessionHandler({ activeTracking, onComplete }: LongSessionHa
 
       tracker.stopTrackingWithEndTime(customTime);
 
-      const customMinutes = Math.round((customTime.getTime() - activeTracking.startTime.getTime()) / 60000);
+      const customMinutes = Math.round(
+        (customTime.getTime() - activeTracking.startTime.getTime()) / 60000,
+      );
       const duration = tracker.formatDuration(customMinutes);
 
       await showToast({
@@ -85,7 +94,11 @@ export function LongSessionHandler({ activeTracking, onComplete }: LongSessionHa
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Submit" onSubmit={handleSubmit} icon={Icon.Check} />
+          <Action.SubmitForm
+            title="Submit"
+            onSubmit={handleSubmit}
+            icon={Icon.Check}
+          />
         </ActionPanel>
       }
     >
@@ -98,11 +111,25 @@ export function LongSessionHandler({ activeTracking, onComplete }: LongSessionHa
         id="option"
         title="How to Record"
         value={selectedOption}
-        onChange={(value) => setSelectedOption(value as "one_hour" | "custom_time" | "keep_full")}
+        onChange={(value) =>
+          setSelectedOption(value as "one_hour" | "custom_time" | "keep_full")
+        }
       >
-        <Form.Dropdown.Item value="one_hour" title="Record as 1 Hour" icon={Icon.Clock} />
-        <Form.Dropdown.Item value="custom_time" title="Specify Stop Time" icon={Icon.Pencil} />
-        <Form.Dropdown.Item value="keep_full" title="Keep Full Duration" icon={Icon.CheckCircle} />
+        <Form.Dropdown.Item
+          value="one_hour"
+          title="Record as 1 Hour"
+          icon={Icon.Clock}
+        />
+        <Form.Dropdown.Item
+          value="custom_time"
+          title="Specify Stop Time"
+          icon={Icon.Pencil}
+        />
+        <Form.Dropdown.Item
+          value="keep_full"
+          title="Keep Full Duration"
+          icon={Icon.CheckCircle}
+        />
       </Form.Dropdown>
 
       {selectedOption === "custom_time" && (
